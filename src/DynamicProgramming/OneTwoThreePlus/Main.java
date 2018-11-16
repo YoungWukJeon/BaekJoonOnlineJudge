@@ -4,8 +4,6 @@ import java.util.Scanner;
 
 public class Main
 {
-	int[] memory = new int[11];	// n < 11
-	
 	public Main()
 	{
 		/*
@@ -24,38 +22,32 @@ public class Main
 		int t = in.nextInt();
 		
 		for( int i = 0; i < t; ++i )
-		{
 			System.out.println(this.solution(in.nextInt()));
-			this.memory = new int[11];
-		}
-	}
-	
-	public int sum(int[] col)
-	{
-		int sum = 0;
-		
-		for( int i = 0; i < col.length; ++i )
-			sum += col[i];
-		
-		return sum;
 	}
 	
 	public int solution(int n)
 	{			
+		/*
+		 * solution(n) = 1 + solution(n - 1), 2 + solution(n - 2), solution(n - 3); (n > 3)
+		 * solution(7) = {1} + solution(6), {2} + solution(5), {3} + solution(4) = 44
+		 * solution(6) = {1} + solution(5), {2} + solution(4), {3} + solution(3) = 24
+		 * solution(5) = {1} + solution(4), {2} + solution(3), {3} + solution(2) = 13
+		 * solution(4) = {1} + solution(3), {2} + solution(2), {3} + solution(1) = 7
+		 * solution(3) = {1} + solution(2), {2} + solution(1), {3} + solution(0) = 4
+		 * solution(2) = {1} + solution(1), {2} + solution(0) = 2
+		 * solution(1) = {1} + solution(0) = 1
+		 */
+		
 		if( n == 1 )
 			return 1;
 		
-		if( this.memory[n] > 0 )
-			return this.memory[n];
+		if( n == 2 )
+			return 2;
 		
-		this.memory[n] = solution(n - 1) + 1;
+		if( n == 3 )
+			return 4;
 		
-		if( n > 3 )
-			this.memory[n] = solution(n - 3) + 1;
-		else if( n > 2 )
-			this.memory[n] = solution(n - 2) + 1;
-		
-		return this.memory[n];
+		return solution(n - 3) + solution(n - 2) + solution(n - 1);
 	}
 	
 	public static void main(String[] args)
