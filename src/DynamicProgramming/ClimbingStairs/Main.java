@@ -31,28 +31,24 @@ public class Main
 		for( int i = 0; i < n; ++i )
 			stair[i] = in.nextInt();
 		
-		System.out.println(this.solution(n, stair, 1, 1));
+		System.out.println(this.solution(n, stair));
 	}
 	
-	public int solution(int n, int[] stair, int current, int stepCnt)
+	public int solution(int n, int[] stair)
 	{
-		System.out.println(current + ", " + stepCnt);
+		this.memory[0] = stair[0];
+		this.memory[1] = max(stair[0] + stair[1], stair[1]);
+		this.memory[2] = max(stair[0] + stair[2], stair[1] + stair[2]);
 		
-		if( current > n )
-			return 0;
+		for( int i = 3; i < n; ++i )
+			this.memory[i] = max(this.memory[i - 2] + stair[i], this.memory[i - 3] + stair[i - 1] + stair[i]);
 		
-		if( current == n )
-			return stair[n - 1];
-		
-		if( memory[current] > 0 )
-			return memory[current];
-		
-		if( (stepCnt == 2 && current + 2 != n) || current == 1 )
-			memory[current] = stair[current - 1] + solution(n, stair, current + 1, 1);
-		
-		memory[current] += stair[current - 1] + solution(n, stair, current + 2, 2);
-		
-		return memory[n];
+		return memory[n - 1];
+	}
+	
+	int max(int a, int b)
+	{
+		return a > b? a: b;
 	}
 	
 	public static void main(String[] args)
